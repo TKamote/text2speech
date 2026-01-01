@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [error, setError] = useState<string | null>(null)
 
   const refreshUser = async () => {
-    if (auth.currentUser) {
+    if (auth && auth.currentUser) {
       await auth.currentUser.reload()
       setUser({ ...auth.currentUser })
     }
