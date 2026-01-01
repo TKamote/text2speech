@@ -13,6 +13,8 @@ import { auth } from './config'
  * Sign up a new user with email and password
  */
 export async function signUp(email: string, password: string): Promise<UserCredential> {
+  if (!auth) throw new Error('Firebase Auth is not initialized')
+  
   const userCredential = await createUserWithEmailAndPassword(auth, email, password)
   
   // Send verification email
@@ -27,6 +29,7 @@ export async function signUp(email: string, password: string): Promise<UserCrede
  * Sign in an existing user
  */
 export async function signIn(email: string, password: string): Promise<UserCredential> {
+  if (!auth) throw new Error('Firebase Auth is not initialized')
   return await signInWithEmailAndPassword(auth, email, password)
 }
 
@@ -34,6 +37,7 @@ export async function signIn(email: string, password: string): Promise<UserCrede
  * Sign out the current user
  */
 export async function logOut(): Promise<void> {
+  if (!auth) throw new Error('Firebase Auth is not initialized')
   return await signOut(auth)
 }
 
@@ -48,6 +52,7 @@ export async function resendVerificationEmail(user: User): Promise<void> {
  * Send password reset email
  */
 export async function resetPassword(email: string): Promise<void> {
+  if (!auth) throw new Error('Firebase Auth is not initialized')
   return await sendPasswordResetEmail(auth, email)
 }
 
@@ -57,4 +62,3 @@ export async function resetPassword(email: string): Promise<void> {
 export function isEmailVerified(user: User | null): boolean {
   return user?.emailVerified ?? false
 }
-
