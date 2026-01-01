@@ -1,25 +1,29 @@
 import { TextToSpeechClient } from '@google-cloud/text-to-speech'
-import { promises as fs } from 'fs'
 
 let client: TextToSpeechClient | null = null
 
 /**
- * Initialize Google Cloud TTS client
+ * Initialize Google Cloud TTS client safely
  */
-export function getTTSClient(): TextToSpeechClient {
-  if (!client) {
-    const credentialsPath = process.env.GOOGLE_APPLICATION_CREDENTIALS
-    
-    if (!credentialsPath) {
-      throw new Error('GOOGLE_APPLICATION_CREDENTIALS environment variable is not set')
-    }
+export function getTTSClient(): TextToSpeechClient | null {
+  if (client) return client
 
+  const credentialsPath = process.env.GOOGLE_APPLICATION_CREDENTIALS
+  
+  if (!credentialsPath) {
+    console.warn('GOOGLE_APPLICATION_CREDENTIALS is not set. TTS features will not work.')
+    return null
+  }
+
+  try {
     client = new TextToSpeechClient({
       keyFilename: credentialsPath,
     })
+    return client
+  } catch (error) {
+    console.error('Google Cloud TTS client initialization error:', error)
+    return null
   }
-
-  return client
 }
 
 /**
@@ -27,13 +31,19 @@ export function getTTSClient(): TextToSpeechClient {
  */
 export async function listVoices(languageCode?: string) {
   const ttsClient = getTTSClient()
+  if (!ttsClient) return []
   
   const request = {
     languageCode: languageCode || 'en-US',
   }
 
-  const [response] = await ttsClient.listVoices(request)
-  return response.voices || []
+  try {
+    const [response] = await ttsClient.listVoices(request)
+    return response.voices || []
+  } catch (error) {
+    console.error('Error listing voices:', error)
+    return []
+  }
 }
 
 /**
@@ -43,8 +53,9 @@ export async function synthesizeSpeech(
   text: string,
   voiceName: string = 'en-US-Neural2-F',
   languageCode: string = 'en-US'
-): Promise<Buffer> {
+): Promise<Buffer | null> {
   const ttsClient = getTTSClient()
+  if (!ttsClient) return null
 
   const request = {
     input: { text },
@@ -58,12 +69,16 @@ export async function synthesizeSpeech(
     },
   }
 
-  const [response] = await ttsClient.synthesizeSpeech(request)
-  
-  if (!response.audioContent) {
-    throw new Error('No audio content returned from TTS API')
+  try {
+    const [response] = await ttsClient.synthesizeSpeech(request)
+    
+    if (!response.audioContent) {
+      throw new Error('No audio content returned from TTS API')
+    }
+
+    return Buffer.from(response.audioContent)
+  } catch (error) {
+    console.error('Error synthesizing speech:', error)
+    return null
   }
-
-  return Buffer.from(response.audioContent)
 }
-
