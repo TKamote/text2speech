@@ -11,29 +11,23 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 }
 
-// Initialize Firebase safely
+// Minimal initialization for build time safety
 let app: FirebaseApp | undefined
 let auth: Auth | undefined
 let db: Firestore | undefined
 
-try {
-  if (typeof window !== 'undefined') { // Only initialize on client
+if (typeof window !== 'undefined' || process.env.NEXT_PHASE === 'phase-production-build') {
+  try {
     if (!getApps().length) {
-      if (firebaseConfig.apiKey && firebaseConfig.apiKey !== 'your_api_key') {
-        app = initializeApp(firebaseConfig)
-        auth = getAuth(app)
-        db = getFirestore(app)
-      } else {
-        console.warn("Firebase API Key is missing or default. Check your .env.local")
-      }
+      app = initializeApp(firebaseConfig)
     } else {
       app = getApps()[0]
-      auth = getAuth(app)
-      db = getFirestore(app)
     }
+    auth = getAuth(app)
+    db = getFirestore(app)
+  } catch (error) {
+    console.warn("Firebase initialization skipped or failed during build.")
   }
-} catch (error) {
-  console.error("Firebase initialization error:", error)
 }
 
 export { auth, db }
