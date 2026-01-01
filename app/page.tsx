@@ -1,15 +1,14 @@
 'use client'
 
 import { useAuth } from '@/context/AuthContext'
-import { logOut } from '@/lib/firebase/auth'
 import Link from 'next/link'
 
 export default function Home() {
-  const { user, loading, error, refreshUser } = useAuth()
+  const { user, loading, error, refreshUser, logout } = useAuth()
 
   const handleLogout = async () => {
     try {
-      await logOut()
+      await logout()
     } catch (error) {
       console.error('Logout error:', error)
     }

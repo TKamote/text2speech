@@ -11,22 +11,24 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 }
 
-// Minimal initialization for build time safety
+// Minimal initialization for build time safety and runtime environment usage
 let app: FirebaseApp | undefined
 let auth: Auth | undefined
 let db: Firestore | undefined
 
-if (typeof window !== 'undefined' || process.env.NEXT_PHASE === 'phase-production-build') {
+if (typeof window !== 'undefined') {
   try {
-    if (!getApps().length) {
-      app = initializeApp(firebaseConfig)
-    } else {
-      app = getApps()[0]
+    if (firebaseConfig.apiKey) {
+      if (!getApps().length) {
+        app = initializeApp(firebaseConfig)
+      } else {
+        app = getApps()[0]
+      }
+      auth = getAuth(app)
+      db = getFirestore(app)
     }
-    auth = getAuth(app)
-    db = getFirestore(app)
   } catch (error) {
-    console.warn("Firebase initialization skipped or failed during build.")
+    console.error("Firebase initialization failed:", error)
   }
 }
 

@@ -81,13 +81,15 @@ tts-app/
 ### Progress:
 - ✅ **Auth Context Created**: `context/AuthContext.tsx` handles global auth state.
 - ✅ **Root Layout Wrapped**: `app/layout.tsx` now uses `AuthProvider`.
+- ✅ **Signup Page Created**: `app/(auth)/signup/page.tsx` with email verification and Firestore sync.
+- ✅ **Login Page Created**: `app/(auth)/login/page.tsx` with search param messaging.
+- ✅ **Home Page Auth-Aware**: `app/page.tsx` shows user state, logout, and verification status.
+- ✅ **Password Reset Created**: `app/(auth)/reset-password/page.tsx` for recovery.
 
 ### To Do:
-1. **Create Authentication Pages**
-   - [ ] Signup page (`app/(auth)/signup/page.tsx`)
-   - [ ] Login page (`app/(auth)/login/page.tsx`)
-   - [ ] Email verification handler (`app/(auth)/verify-email/page.tsx`)
-   - [ ] Password reset page (`app/(auth)/reset-password/page.tsx`)
+1. **Complete Phase 2**
+   - [ ] Finalize Email verification handler customization (optional)
+   - [ ] Implement Protected Route wrapper component
 
 2. **Create Authentication API Routes**
    - [ ] Signup endpoint (`app/api/auth/signup/route.ts`)

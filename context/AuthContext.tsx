@@ -1,7 +1,7 @@
 'use client'
 
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { onAuthStateChanged, User } from 'firebase/auth'
+import { onAuthStateChanged, User, signOut } from 'firebase/auth'
 import { auth } from '@/lib/firebase/config'
 
 interface AuthContextType {
@@ -9,6 +9,7 @@ interface AuthContextType {
   loading: boolean
   error: string | null
   refreshUser: () => Promise<void>
+  logout: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -16,6 +17,7 @@ const AuthContext = createContext<AuthContextType>({
   loading: true,
   error: null,
   refreshUser: async () => {},
+  logout: async () => {},
 })
 
 export const useAuth = () => useContext(AuthContext)
@@ -29,6 +31,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (auth && auth.currentUser) {
       await auth.currentUser.reload()
       setUser({ ...auth.currentUser })
+    }
+  }
+
+  const logout = async () => {
+    if (auth) {
+      await signOut(auth)
     }
   }
 

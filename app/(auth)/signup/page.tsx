@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { signUp } from '@/lib/firebase/auth'
+import { createUserDocument } from '@/lib/firebase/firestore'
 
 export default function SignupPage() {
   const [email, setEmail] = useState('')
@@ -29,7 +30,13 @@ export default function SignupPage() {
 
     setLoading(true)
     try {
-      await signUp(email, password)
+      const userCredential = await signUp(email, password)
+      
+      // Create user document in Firestore
+      if (userCredential.user) {
+        await createUserDocument(userCredential.user.uid, email)
+      }
+
       // On success, Firebase sends verification email automatically in our helper
       router.push('/login?message=Verification email sent. Please check your inbox.')
     } catch (err: any) {
