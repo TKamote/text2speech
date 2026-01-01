@@ -80,7 +80,7 @@ export default function SignupPage() {
               />
             </div>
             <div>
-              <label htmlFor="password" name="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Password
               </label>
               <input
@@ -96,7 +96,7 @@ export default function SignupPage() {
               />
             </div>
             <div>
-              <label htmlFor="confirm-password" name="confirm-password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Confirm Password
               </label>
               <input

@@ -86,10 +86,10 @@ export default function LoginPage() {
             </div>
             <div>
               <div className="flex justify-between mb-1">
-                <label htmlFor="password" name="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Password
                 </label>
-                <Link href="/reset-password" name="reset-password" className="text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
+                <Link href="/reset-password" className="text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
                   Forgot password?
                 </Link>
               </div>
