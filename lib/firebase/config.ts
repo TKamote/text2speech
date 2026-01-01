@@ -1,35 +1,27 @@
-import { initializeApp, getApps, FirebaseApp } from 'firebase/app'
-import { getAuth, Auth } from 'firebase/auth'
-import { getFirestore, Firestore } from 'firebase/firestore'
+import { initializeApp, getApps, getApp } from 'firebase/app'
+import { getAuth } from 'firebase/auth'
+import { getFirestore } from 'firebase/firestore'
+import { getAnalytics, isSupported } from 'firebase/analytics'
 
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-}
+  apiKey: "AIzaSyDLVzh1_l_r5V13uaglH6NgL1tAT1ZdNac",
+  authDomain: "text-to-speech-app-2026-8f083.firebaseapp.com",
+  projectId: "text-to-speech-app-2026-8f083",
+  storageBucket: "text-to-speech-app-2026-8f083.firebasestorage.app",
+  messagingSenderId: "596509392612",
+  appId: "1:596509392612:web:7249232b800a812c12f6f1",
+  measurementId: "G-NDFT06RF35"
+};
 
-// Minimal initialization for build time safety and runtime environment usage
-let app: FirebaseApp | undefined
-let auth: Auth | undefined
-let db: Firestore | undefined
+// Initialize Firebase
+const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig)
+const auth = getAuth(app)
+const db = getFirestore(app)
 
+// Initialize Analytics (Safe for SSR)
 if (typeof window !== 'undefined') {
-  try {
-    if (firebaseConfig.apiKey) {
-      if (!getApps().length) {
-        app = initializeApp(firebaseConfig)
-      } else {
-        app = getApps()[0]
-      }
-      auth = getAuth(app)
-      db = getFirestore(app)
-    }
-  } catch (error) {
-    console.error("Firebase initialization failed:", error)
-  }
+  isSupported().then((yes) => yes && getAnalytics(app));
 }
 
 export { auth, db }
