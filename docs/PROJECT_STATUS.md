@@ -85,11 +85,14 @@ tts-app/
 - ✅ **Login Page Created**: `app/(auth)/login/page.tsx` with search param messaging.
 - ✅ **Home Page Auth-Aware**: `app/page.tsx` shows user state, logout, and verification status.
 - ✅ **Password Reset Created**: `app/(auth)/reset-password/page.tsx` for recovery.
+- ✅ **TTS Workspace Placeholder**: `app/tts/page.tsx` created and protected.
 
 ### To Do:
-1. **Complete Phase 2**
-   - [ ] Finalize Email verification handler customization (optional)
-   - [ ] Implement Protected Route wrapper component
+1. **Phase 3 - Google Cloud Integration**
+   - [ ] Set up Google Cloud Project
+   - [ ] Enable Text-to-Speech API
+   - [ ] Create Service Account and JSON Key
+   - [ ] Implement TTS API Route
 
 2. **Create Authentication API Routes**
    - [ ] Signup endpoint (`app/api/auth/signup/route.ts`)
