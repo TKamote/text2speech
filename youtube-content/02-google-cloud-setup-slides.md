@@ -37,7 +37,7 @@ Text-to-Speech Setup
 Step-by-Step Tutorial
 ```
 
-**TTS Narration**:
+**TTS Narration**: USED: Casual K Tier 3 ($)
 ```
 Welcome! This is a complete, step-by-step guide to setting up Google Cloud Text-to-Speech API. Whether you're building a Next.js app, a React project, or any other application, this tutorial will walk you through every step needed to get your credentials configured. Let's get started!
 ```
@@ -70,15 +70,15 @@ Before we begin, make sure you have a Google account and access to Google Cloud 
 Why Google Cloud TTS?
 
 ✓ High-quality neural voices
-✓ 50+ languages supported
-✓ Free tier: 4M characters/month
+✓ 75+ languages supported
+✓ Free tier: 4M characters/month for standard voices
 ✓ Easy API integration
 ✓ Production-ready
 ```
 
 **TTS Narration**:
 ```
-Google Cloud Text-to-Speech offers high-quality neural voices, supports over 50 languages, and has a generous free tier of 4 million characters per month. It's easy to integrate and production-ready. Perfect for adding text-to-speech to your applications.
+Google Cloud Text-to-Speech offers high-quality neural voices and supports over 75 languages and variants. It provides a generous free tier of 4 million characters per month for Standard voices and 1 million for Neural voices, making it a production-ready and easily integrated solution perfect for adding speech to your applications
 ```
 
 ---
@@ -279,7 +279,7 @@ Next Steps
 
 **TTS Narration**:
 ```
-Great! Your Google Cloud setup is complete. Next, you'll use these credentials in your application. Set up environment variables for production, test the TTS API to make sure everything works, and if you're building with Next.js, check out my tutorial on integrating this into your Next.js application. The link is in the description below.
+Great! Your Google Cloud setup is complete. Next, you'll use these credentials in your application. Set up environment variables for production, test the TTS API to make sure everything works, and if you're building with Nextjs, check out my tutorial on integrating this into your Nextjs application. The link is in the description below.
 ```
 
 ---
@@ -313,20 +313,32 @@ If you run into issues, here are some common problems. If you get "API not enabl
 ```
 Cost Information
 
-Standard & Neural2:
-• Free Tier: 0-1M chars/month
-• After: $16 per 1M characters
+Standard Voices:
 
-Studio & Journey (Ultra Premium):
-• No Free Tier
-• $160 per 1M characters (10x cost!)
+Free Tier: 0–4 Million characters/month
+
+After: $4 per 1 million characters
+
+Neural2 & WaveNet:
+
+Free Tier: 0–1 Million characters/month
+
+After: $16 per 1 million characters
+
+Studio & Journey (Premium):
+
+Free Tier: 0–1 Million characters/month (It does actually have a free tier!)
+
+After: $160 per 1 million characters (10x cost)
 
 Check pricing calculator!
 ```
 
 **TTS Narration**:
 ```
-A quick but important note on cost. Google Cloud has two main pricing tiers. Standard and Neural2 voices are affordable, with a free tier of up to 1 million characters per month. However, the new "Studio" and "Journey" voices are ultra-premium and cost about 10 times more—160 dollars per million characters—with no free tier. Be careful which voice you choose!
+A quick but important note on cost. Google Cloud has different pricing tiers based on voice quality. Standard and Neural2 voices are the most affordable, with Standard giving you up to 4 million characters free and Neural2 giving you 1 million.
+
+However, be careful with the Studio and Journey voices. While they also offer a 1-million-character free tier, once you exceed that, the price jumps to 160 dollars per million characters—that is 10 times the cost of the standard neural voices! Always check the pricing calculator before starting a high-volume project.
 ```
 
 ---
