@@ -4,21 +4,20 @@ import { synthesizeSpeech } from '@/lib/google-cloud/tts';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { text, voice } = body;
+    const { text, voice, languageCode } = body;
 
     if (!text) {
       return NextResponse.json({ error: 'Text is required' }, { status: 400 });
     }
 
-    // Call Google Cloud TTS
-    const audioBuffer = await synthesizeSpeech(text, voice);
+    // Call Google Cloud TTS with all parameters
+    const audioBuffer = await synthesizeSpeech(text, voice, languageCode);
 
     if (!audioBuffer) {
       throw new Error('No audio content received');
     }
 
     // Return the audio as a response
-    // Convert Buffer to Uint8Array for Next.js Response
     const audioData = new Uint8Array(audioBuffer as Buffer);
 
     return new NextResponse(audioData, {
