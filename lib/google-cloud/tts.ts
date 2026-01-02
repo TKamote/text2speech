@@ -19,7 +19,8 @@ export const getTTSClient = () => {
 export const synthesizeSpeech = async (
   text: string, 
   voiceName: string = 'en-US-Journey-F',
-  languageCode: string = 'en-US'
+  languageCode: string = 'en-US',
+  speakingRate: number = 1.0
 ) => {
   const client = getTTSClient();
 
@@ -29,7 +30,10 @@ export const synthesizeSpeech = async (
       languageCode: languageCode, 
       name: voiceName 
     },
-    audioConfig: { audioEncoding: 'MP3' as const },
+    audioConfig: { 
+      audioEncoding: 'MP3' as const,
+      speakingRate: speakingRate // Add speaking rate (0.25 to 4.0)
+    },
   };
 
   const [response] = await client.synthesizeSpeech(request);

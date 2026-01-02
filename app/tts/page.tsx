@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
 import Link from 'next/link'
-import { Play, Download, Volume2, Loader2, DollarSign } from 'lucide-react'
+import { Play, Download, Volume2, Loader2, DollarSign, Gauge } from 'lucide-react'
 
 // Define the Voice interface based on Google's response
 interface Voice {
@@ -19,6 +19,7 @@ export default function TTSPage() {
   
   const [text, setText] = useState('')
   const [voice, setVoice] = useState('en-US-Journey-F') 
+  const [speakingRate, setSpeakingRate] = useState(1.0) // Default speed: 1.0
   const [voiceOptions, setVoiceOptions] = useState<Voice[]>([])
   const [isLoadingVoices, setIsLoadingVoices] = useState(true)
   const [isGenerating, setIsGenerating] = useState(false)
@@ -38,11 +39,6 @@ export default function TTSPage() {
         const response = await fetch('/api/tts/voices')
         if (response.ok) {
           const data = await response.json()
-          
-          // SUPER STRICT FILTER: 
-          // 1. Must satisfy the API language code check (en-US)
-          // 2. AND the voice name MUST start with "en-US-" 
-          //    (This eliminates Gemini voices like "Leda", "Puck", etc.)
           const filteredVoices = (data.voices || []).filter((v: Voice) => 
             v.languageCodes[0] === 'en-US' && v.name.startsWith('en-US-')
           )
@@ -66,7 +62,6 @@ export default function TTSPage() {
     setIsGenerating(true)
     setAudioUrl(null)
 
-    // Find the full voice object to get its correct language code
     const selectedVoice = voiceOptions.find(v => v.name === voice)
     const languageCode = selectedVoice ? selectedVoice.languageCodes[0] : 'en-US'
 
@@ -77,7 +72,8 @@ export default function TTSPage() {
         body: JSON.stringify({ 
           text, 
           voice,
-          languageCode
+          languageCode,
+          speakingRate // Send speed to backend
         }),
       })
 
@@ -153,30 +149,53 @@ export default function TTSPage() {
               </div>
             </div>
 
-            {/* Voice selection */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                Select Voice {isLoadingVoices && '(Loading...)'}
-              </label>
-              <select
-                className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
-                value={voice}
-                onChange={(e) => setVoice(e.target.value)}
-                disabled={isLoadingVoices}
-              >
-                {/* Default options as fallback or header */}
-                <option value="en-US-Journey-F">Default (US Female Journey)</option>
-                
-                {voiceOptions.map((v) => (
-                  <option key={v.name} value={v.name}>
-                    {v.name} ({getVoiceLabel(v.name)}) - {v.ssmlGender}
-                  </option>
-                ))}
-              </select>
-              <p className="mt-2 text-xs text-gray-500">
-                <span className="font-bold">Pricing Guide:</span> Tier 1 (Studio) is 10x more expensive than Tier 2/3.
-              </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Voice selection */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  Select Voice {isLoadingVoices && '(Loading...)'}
+                </label>
+                <select
+                  className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                  value={voice}
+                  onChange={(e) => setVoice(e.target.value)}
+                  disabled={isLoadingVoices}
+                >
+                  <option value="en-US-Journey-F">Default (US Female Journey)</option>
+                  {voiceOptions.map((v) => (
+                    <option key={v.name} value={v.name}>
+                      {v.name.replace('en-US-', '')} ({getVoiceLabel(v.name)}) - {v.ssmlGender}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Speed Control */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center justify-between">
+                  <span className="flex items-center gap-2"><Gauge className="w-4 h-4"/> Speaking Rate</span>
+                  <span className="text-indigo-600 font-bold">{speakingRate.toFixed(2)}x</span>
+                </label>
+                <input 
+                  type="range" 
+                  min="0.25" 
+                  max="4.0" 
+                  step="0.25" 
+                  value={speakingRate}
+                  onChange={(e) => setSpeakingRate(parseFloat(e.target.value))}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 accent-indigo-600"
+                />
+                <div className="flex justify-between text-xs text-gray-400 mt-1">
+                  <span>Slow (0.25x)</span>
+                  <span>Normal (1.0x)</span>
+                  <span>Fast (4.0x)</span>
+                </div>
+              </div>
             </div>
+
+            <p className="text-xs text-gray-500">
+              <span className="font-bold">Pricing Guide:</span> Tier 1 (Studio) is 10x more expensive than Tier 2/3.
+            </p>
 
             {/* Generate button */}
             <button

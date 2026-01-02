@@ -308,20 +308,25 @@ If you run into issues, here are some common problems. If you get "API not enabl
 ---
 
 ## Slide 15: Cost Information
-**Visual**: Pricing breakdown
+**Visual**: Pricing breakdown chart
 **Slide Text**:
 ```
 Cost Information
 
-Free Tier: 0-4M characters/month
-After: $4 per 1M characters
+Standard & Neural2:
+• Free Tier: 0-1M chars/month
+• After: $16 per 1M characters
 
-Perfect for most projects!
+Studio & Journey (Ultra Premium):
+• No Free Tier
+• $160 per 1M characters (10x cost!)
+
+Check pricing calculator!
 ```
 
 **TTS Narration**:
 ```
-Quick note on cost. Google Cloud offers a generous free tier of up to 4 million characters per month. After that, it's about 4 dollars per million characters. For most projects, especially portfolio websites or small applications, the free tier is more than enough. You can check your usage in the Google Cloud Console.
+A quick but important note on cost. Google Cloud has two main pricing tiers. Standard and Neural2 voices are affordable, with a free tier of up to 1 million characters per month. However, the new "Studio" and "Journey" voices are ultra-premium and cost about 10 times more—160 dollars per million characters—with no free tier. Be careful which voice you choose!
 ```
 
 ---
